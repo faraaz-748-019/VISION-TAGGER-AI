@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisionTagger AI - Visual Intelligence Platform</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6c5b7b;
+      --secondary: #c06c84;
+      --accent: #f8b195;
+      --dark: #1a1a1a;
+      --darker: #121212;
+      --light: #f5f5f5;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--darker);
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      padding: 40px 0;
+    }
+    
+    .app-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #ffffff, #f8b195);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .app-subtitle {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+    }
+    
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.5;
+      }
+      25% {
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateY(-20px) translateX(20px) rotate(180deg);
+        opacity: 0.3;
+      }
+      75% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+        opacity: 0.5;
+      }
+    }
+    
+    /* Main Content Styles */
+    main {
+      padding: 50px 0;
+    }
+    
+    .features-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--secondary);
+    }
+    
+    .feature-title {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--accent);
+    }
+    
+    .feature-description {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+    
+    /* Upload Section Styles */
+    .upload-section {
+      background: rgba(26, 26, 26, 0.5);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 50px 0;
+      border: 2px dashed var(--secondary);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .upload-section:hover {
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(192, 108, 132, 0.2);
+    }
+    
+    .upload-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--light);
+    }
+    
+    .upload-description {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .upload-zone {
+      border: 3px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 50px 20px;
+      cursor: pointer;
+      margin-bottom: 30px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .upload-zone:hover {
+      border-color: var(--secondary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 4rem;
+      color: var(--secondary);
+      margin-bottom: 20px;
+    }
+    
+    .upload-text {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .file-input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .analyze-btn {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .analyze-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+    }
+    
+    .analyze-btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Results Section Styles */
+    .results-section {
+      display: none;
+      margin-top: 50px;
+      padding: 40px;
+      background: rgba(26, 26, 26, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .results-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .results-title i {
+      font-size: 1.8rem;
+    }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    
+    .image-preview {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .image-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .analysis-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 15px;
+      color: var(--light);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .tab-btn.active {
+      background: rgba(192, 108, 132, 0.3);
+      color: var(--accent);
+    }
+    
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+    
+    .tab-content {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .result-json {
+      background: #2d2d2d;
+      color: #eaeaea;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+    
+    .result-key {
+      color: #c06c84;
+    }
+    
+    .result-string {
+      color: #95e616;
+    }
+    
+    .result-number {
+      color: #66d9ef;
+    }
+    
+    .result-boolean {
+      color: #fd971f;
+    }
+    
+    /* Footer Styles */
+    footer {
+      background: var(--dark);
+      padding: 30px 0;
+      text-align: center;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-text {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+    }
+    
+    .footer-heart {
+      color: var(--secondary);
+      animation: beat 1s infinite alternate;
+      display: inline-block;
+    }
+    
+    @keyframes beat {
+      to {
+        transform: scale(1.3);
+      }
+    }
+    
+    /* Loading Animation */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--secondary);
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .app-title {
+        font-size: 2.5rem;
+      }
+      
+      .app-subtitle {
+        font-size: 1.2rem;
+      }
+      
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .feature-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+      <div class="header-content">
+        <h1 class="app-title">VisionTagger AI</h1>
+        <p class="app-subtitle">Unlock the Hidden Stories in Your Images</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="features-section">
+      <div class="feature-card">
+        <i class="fas fa-tags feature-icon"></i>
+        <h3 class="feature-title">Smart Labeling</h3>
+        <p class="feature-description">Our AI identifies key elements and applies intelligent tags to help you organize and discover insights in your images.</p>
+      </div>
+      
+      <div class="feature-card">
+        <i class="fas fa-palette feature-icon"></i>
+        <h3 class="feature-title">Color Analysis</h3>
+        <p class="feature-description">Extract dominant color palettes and patterns to understand the visual composition and emotional tone of your images.</p>
+      </div>
+      
+      <div class="feature-card">
+        <i class="fas fa-search feature-icon"></i>
+        <h3 class="feature-title">Object Detection</h3>
+        <p class="feature-description">Pinpoint and categorize specific objects within your images with precise bounding boxes and confidence scores.</p>
+      </div>
+    </section>
+
+    <section class="upload-section">
+      <h2 class="upload-title">Analyze Your Image</h2>
+      <p class="upload-description">Upload any JPG, JPEG, or PNG file to begin your visual discovery journey. Our AI will decode the hidden details and provide comprehensive insights.</p>
+      
+      <div class="upload-zone" id="uploadZone">
+        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+        <p class="upload-text">Drag & drop your image here or click to browse</p>
+        <p class="upload-text" style="font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">Supports: JPG, JPEG, PNG</p>
+        <input type="file" class="file-input" id="fileInput" accept=".jpg,.jpeg,.png">
+      </div>
+      
+      <div id="filePreview" style="display: none; margin-bottom: 30px;">
+        <p id="fileName" style="margin-bottom: 15px; color: var(--accent);"></p>
+        <img id="imagePreview" style="max-width: 300px; max-height: 200px; border-radius: 10px; margin: 0 auto; display: block;">
+      </div>
+      
+      <button class="analyze-btn" id="analyzeBtn">
+        <i class="fas fa-magic"></i>
+        Analyze Image
+      </button>
+    </section>
+    
+    <div class="loading" id="loadingSection">
+      <div class="loading-spinner"></div>
+      <p>Decoding visual elements...</p>
+    </div>
+
+    <section class="results-section" id="resultsSection">
+      <h2 class="results-title">
+        <i class="fas fa-chart-pie"></i>
+        Analysis Results
+      </h2>
+      
+      <div class="results-grid">
+        <div class="image-preview">
+          <img id="resultImage" src="bg.jpg" alt="Analyzed Image">
+        </div>
+        
+        <div class="analysis-results">
+          <div class="analysis-tabs">
+            <button class="tab-btn active" data-tab="labels">Labels</button>
+            <button class="tab-btn" data-tab="objects">Objects</button>
+            <button class="tab-btn" data-tab="colors">Colors</button>
+            <button class="tab-btn" data-tab="text">Text</button>
+          </div>
+          
+          <div class="tab-content">
+            <div class="result-json" id="resultJson">
+              {
+                <span class="result-key">"labels"</span>: [
+                  {
+                    <span class="result-key">"description"</span>: <span class="result-string">"example"</span>,
+                    <span class="result-key">"score"</span>: <span class="result-number">0.95</span>
+                  }
+                ]
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-text">Crafted with <span class="footer-heart">❤</span> using Google Cloud Vision API and Streamlit</p>
+    </div>
+  </footer>
+
+  <script>
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    const colors = ['#6c5b7b', '#c06c84', '#f8b195', '#f67280'];
+    const numParticles = 30;
+    
+    for (let i = 0; i < numParticles; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      // Random properties
+      const size = Math.random() * 30 + 10;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 20 + 10;
+      const delay = Math.random() * 5;
+      
+      // Set styles
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.backgroundColor = color;
+      particle.style.top = `${top}%`;
+      particle.style.left = `${left}%`;
+      particle.style.animationDuration = `${duration}s`;
+      particle.style.animationDelay = `${delay}s`;
+      
+      particlesContainer.appendChild(particle);
+    }
+    
+    // File input handling
+    const fileInput = document.getElementById('fileInput');
+    const uploadZone = document.getElementById('uploadZone');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    const imagePreview = document.getElementById('imagePreview');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const loadingSection = document.getElementById('loadingSection');
+    const resultsSection = document.getElementById('resultsSection');
+    const resultImage = document.getElementById('resultImage');
+    
+    uploadZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', handleFileSelect);
+    
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Please select a valid image file (JPG, JPEG, PNG)');
+        return;
+      }
+      
+      fileName.textContent = file.name;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        filePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Handle drag and drop
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary');
+      uploadZone.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+    });
+    
+    uploadZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+      uploadZone.style.backgroundColor = 'transparent';
+    });
+    
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+      uploadZone.style.backgroundColor = 'transparent';
+      
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+      
+      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Please select a valid image file (JPG, JPEG, PNG)');
+        return;
+      }
+      
+      // Create a new DataTransfer object and add the file
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      
+      // Set the files property of the file input
+      fileInput.files = dataTransfer.files;
+      
+      // Trigger the change event
+      const event = new Event('change', { bubbles: true });
+      fileInput.dispatchEvent(event);
+    });
+    
+    // Analyze button click
+    analyzeBtn.addEventListener('click', () => {
+      if (!fileInput.files[0]) {
+        alert('Please select an image first');
+        return;
+      }
+      
+      loadingSection.style.display = 'block';
+      
+      // Simulate analysis (in a real app, this would call your backend)
+      setTimeout(() => {
+        loadingSection.style.display = 'none';
+        resultsSection.style.display = 'block';
+        resultImage.src = imagePreview.src;
+        
+        // Scroll to results
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+      }, 2000);
+    });
+    
+    // Tab handling
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const resultJson = document.getElementById('resultJson');
+    
+    const sampleResults = {
+      labels: [
+        { description: "Nature", score: 0.97 },
+        { description: "Sky", score: 0.94 },
+        { description: "Landscape", score: 0.91 },
+        { description: "Mountain", score: 0.87 },
+        { description: "Outdoor", score: 0.85 }
+      ],
+      objects: [
+        { name: "Mountain", bounding_box: [{ x: 20, y: 30 }, { x: 300, y: 30 }, { x: 300, y: 200 }, { x: 20, y: 200 }] },
+        { name: "Tree", bounding_box: [{ x: 320, y: 150 }, { x: 380, y: 150 }, { x: 380, y: 250 }, { x: 320, y: 250 }] }
+      ],
+      colors: [
+        { color: 135, green: 206, blue: 235, score: 0.43, pixel_fraction: 0.38 },
+        { color: 65, green: 105, blue: 225, score: 0.22, pixel_fraction: 0.21 }
+      ],
+      text: [
+        { text: "Sample text detected in image" }
+      ]
+    };
+    
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Show corresponding data
+        const tabName = button.getAttribute('data-tab');
+        
+        let jsonContent = JSON.stringify(sampleResults[tabName], null, 2);
+        
+        // Add syntax highlighting
+        jsonContent = jsonContent.replace(/"([^"]+)":/g, '<span class="result-key">"$1"</span>:');
+        jsonContent = jsonContent.replace(/"([^"]+)"/g, '<span class="result-string">"$1"</span>');
+        jsonContent = jsonContent.replace(/: ([0-9.]+)([,\n\s}])/g, ': <span class="result-number">$1</span>$2');
+        
+        resultJson.innerHTML = jsonContent;
+      });
+    });
+  </script>
+</body>
+</html>
